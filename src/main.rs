@@ -39,7 +39,7 @@ async fn handler(event: CustomEvent, _: Context) -> Result<Value, LambdaError> {
 
     //create dynamodb client object
     let client = Client::new(&config);
-
+    //create the request by making the table name and the attributes of the custom event
     let request = client
         .put_item()
         .table_name("customers")
@@ -54,6 +54,6 @@ async fn handler(event: CustomEvent, _: Context) -> Result<Value, LambdaError> {
         )
         .item("ID", AttributeValue::N(event.id.to_string()));
 
-    request.send().await?;
+    request.send().await?; // block on this operation until it finishes
     Ok(json!({"message": "Record written!"}))
 }
